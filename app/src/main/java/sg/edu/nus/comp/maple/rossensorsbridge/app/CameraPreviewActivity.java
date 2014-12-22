@@ -28,12 +28,7 @@ public class CameraPreviewActivity extends Activity {
         this.preview = new CameraPreview(this, this.camera);
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.camera_preview);
         frameLayout.addView(this.preview);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        this.camera.release();
+        this.preview.startCameraPreview();
     }
 
     @Override
