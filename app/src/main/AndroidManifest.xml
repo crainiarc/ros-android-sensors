@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sg.edu.nus.comp.maple.rossensorsbridge.app" >
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -11,12 +12,21 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="sg.edu.nus.comp.maple.rossensorsbridge.app.CameraPreviewActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="sg.edu.nus.comp.maple.rossensorsbridge.app.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="sg.edu.nus.comp.maple.rossensorsbridge.app.CameraPreviewActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.edu.nus.comp.maple.rossensorsbridge.app.CameraPreviewActivity" />
         </activity>
     </application>
 
