@@ -11,8 +11,8 @@ import android.widget.FrameLayout;
 
 public class CameraPreviewActivity extends Activity {
 
-    private Camera camera;
-    private CameraPreview preview;
+    private Camera mCamera;
+    private CameraPreview mPreview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +25,10 @@ public class CameraPreviewActivity extends Activity {
         super.onResume();
 
         this.safeOpenCamera();
-        this.preview = new CameraPreview(this, this.camera);
+        this.mPreview = new CameraPreview(this, this.mCamera);
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.camera_preview);
-        frameLayout.addView(this.preview);
-        this.preview.startCameraPreview();
+        frameLayout.addView(this.mPreview);
+        this.mPreview.startCameraPreview();
     }
 
     @Override
@@ -56,8 +56,8 @@ public class CameraPreviewActivity extends Activity {
         boolean opened = false;
         try {
             this.releaseCameraAndPreview();
-            this.camera = Camera.open();
-            opened = (this.camera != null);
+            this.mCamera = Camera.open();
+            opened = (this.mCamera != null);
         } catch (Exception e) {
             Log.e(getString(R.string.app_name), "Failed to open Camera");
             e.printStackTrace();
@@ -66,13 +66,13 @@ public class CameraPreviewActivity extends Activity {
     }
 
     private void releaseCameraAndPreview() {
-        if (this.preview != null) {
-            this.preview.setCamera(null);
+        if (this.mPreview != null) {
+            this.mPreview.setmCamera(null);
         }
 
-        if (this.camera != null) {
-            this.camera.release();
-            this.camera = null;
+        if (this.mCamera != null) {
+            this.mCamera.release();
+            this.mCamera = null;
         }
     }
 }

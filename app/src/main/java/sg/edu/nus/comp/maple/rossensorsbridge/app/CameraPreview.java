@@ -14,41 +14,41 @@ import java.util.List;
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
     private final static String TAG = "ROSSERIALBRIDGE.CAMERAPREVIEW";
-    private SurfaceHolder holder;
-    private Camera camera;
-    private final Context context;
-    private Camera.Size previewSize;
-    private List<Camera.Size> supportedPreviewSizes;
-    private List<String> supportedFlashModes;
+    private SurfaceHolder mHolder;
+    private Camera mCamera;
+    private final Context mContext;
+    private Camera.Size mPreviewSize;
+    private List<Camera.Size> mSupportedPreviewSizes;
+    private List<String> mSupportedFlashModes;
 
-    public CameraPreview(Context context, Camera camera) {
-        super(context);
+    public CameraPreview(Context mContext, Camera mCamera) {
+        super(mContext);
 
-        this.context = context;
-        this.setCamera(camera);
+        this.mContext = mContext;
+        this.setmCamera(mCamera);
 
-        this.holder = getHolder();
-        this.holder.addCallback(this);
-        this.holder.setKeepScreenOn(true);
-        this.holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS); // Deprecated since Android 3.0
+        this.mHolder = getHolder();
+        this.mHolder.addCallback(this);
+        this.mHolder.setKeepScreenOn(true);
+        this.mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS); // Deprecated since Android 3.0
     }
 
     public void startCameraPreview() {
         try {
-            this.camera.setPreviewDisplay(this.holder);
-            this.camera.startPreview();
+            this.mCamera.setPreviewDisplay(this.mHolder);
+            this.mCamera.startPreview();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
-        if (this.camera == null) { return; }
+        if (this.mCamera == null) { return; }
 
         try {
-            this.camera.setPreviewDisplay(this.holder);
+            this.mCamera.setPreviewDisplay(this.mHolder);
         } catch (IOException e) {
-            Log.d(TAG, "Error setting camera preview: " + e.getMessage());
+            Log.d(TAG, "Error setting mCamera preview: " + e.getMessage());
         }
     }
 
@@ -57,21 +57,21 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        if (this.holder.getSurface() == null || this.camera == null) { return; }
+        if (this.mHolder.getSurface() == null || this.mCamera == null) { return; }
 
         try {
-            this.camera.stopPreview();
+            this.mCamera.stopPreview();
 
-            Camera.Parameters params = this.camera.getParameters();
+            Camera.Parameters params = this.mCamera.getParameters();
             params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
 
-            if (this.previewSize != null) {
-                Camera.Size previewSize = this.previewSize;
+            if (this.mPreviewSize != null) {
+                Camera.Size previewSize = this.mPreviewSize;
                 params.setPreviewSize(previewSize.width, previewSize.height);
             }
 
-            this.camera.setParameters(params);
-            this.camera.startPreview();
+            this.mCamera.setParameters(params);
+            this.mCamera.startPreview();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,8 +85,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         setMeasuredDimension(width, height);
 
-        if (this.supportedPreviewSizes != null) {
-            this.previewSize = this.getOptimalPreviewSize(this.supportedPreviewSizes, width, height);
+        if (this.mSupportedPreviewSizes != null) {
+            this.mPreviewSize = this.getOptimalPreviewSize(this.mSupportedPreviewSizes, width, height);
         }
     }
     
@@ -100,30 +100,30 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             int previewWidth = width;
             int previewHeight = height;
 
-            if (this.previewSize != null) {
-                Display display = ((WindowManager)this.context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            if (this.mPreviewSize != null) {
+                Display display = ((WindowManager)this.mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
                 switch (display.getRotation()) {
                     case Surface.ROTATION_0:
-                        previewWidth = this.previewSize.height;
-                        previewHeight = this.previewSize.width;
-                        this.camera.setDisplayOrientation(90);
+                        previewWidth = this.mPreviewSize.height;
+                        previewHeight = this.mPreviewSize.width;
+                        this.mCamera.setDisplayOrientation(90);
                         break;
 
                     case Surface.ROTATION_90:
-                        previewWidth = this.previewSize.width;
-                        previewHeight = this.previewSize.height;
+                        previewWidth = this.mPreviewSize.width;
+                        previewHeight = this.mPreviewSize.height;
                         break;
 
                     case Surface.ROTATION_180:
-                        previewWidth = this.previewSize.height;
-                        previewHeight = this.previewSize.width;
+                        previewWidth = this.mPreviewSize.height;
+                        previewHeight = this.mPreviewSize.width;
                         break;
 
                     case Surface.ROTATION_270:
-                        previewWidth = this.previewSize.width;
-                        previewHeight = this.previewSize.height;
-                        this.camera.setDisplayOrientation(180);
+                        previewWidth = this.mPreviewSize.width;
+                        previewHeight = this.mPreviewSize.height;
+                        this.mCamera.setDisplayOrientation(180);
                         break;
                 }
             }
@@ -149,25 +149,25 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         if (optimalSize == null) {
             // TODO
-            optimalSize = this.supportedPreviewSizes.get(0);
+            optimalSize = this.mSupportedPreviewSizes.get(0);
         }
 
         return optimalSize;
     }
 
-    public void setCamera(Camera camera) {
-        if (this.camera == camera) { return; }
+    public void setmCamera(Camera mCamera) {
+        if (this.mCamera == mCamera) { return; }
 
         this.stopPreviewAndFreeCamera();
-        this.camera = camera;
-        if (this.camera != null) {
-            this.supportedPreviewSizes = this.camera.getParameters().getSupportedPreviewSizes();
-            this.supportedFlashModes = this.camera.getParameters().getSupportedFlashModes();
+        this.mCamera = mCamera;
+        if (this.mCamera != null) {
+            this.mSupportedPreviewSizes = this.mCamera.getParameters().getSupportedPreviewSizes();
+            this.mSupportedFlashModes = this.mCamera.getParameters().getSupportedFlashModes();
 
-            if (this.supportedFlashModes != null && this.supportedFlashModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
-                Camera.Parameters params = this.camera.getParameters();
+            if (this.mSupportedFlashModes != null && this.mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
+                Camera.Parameters params = this.mCamera.getParameters();
                 params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
-                this.camera.setParameters(params);
+                this.mCamera.setParameters(params);
             }
         }
 
@@ -175,10 +175,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void stopPreviewAndFreeCamera() {
-        if (this.camera != null) {
-            this.camera.stopPreview();
-            this.camera.release();
-            this.camera = null;
+        if (this.mCamera != null) {
+            this.mCamera.stopPreview();
+            this.mCamera.release();
+            this.mCamera = null;
         }
     }
 }
