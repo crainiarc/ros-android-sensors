@@ -48,7 +48,7 @@ public class CameraPreviewActivity extends Activity {
                 return true;
 
             default:
-                return super.onOptionsItemSelected(item)
+                return super.onOptionsItemSelected(item);
         }
     }
 
