@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.SensorManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +19,7 @@ public class CameraPreviewActivity extends Activity {
     private Camera mCamera;
     private CameraPreview mPreview;
     private PhoneSensorManager mPhoneSensorManager;
+    private PhoneGPSManager mPhoneGPSManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +29,16 @@ public class CameraPreviewActivity extends Activity {
 
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         this.mPhoneSensorManager = new PhoneSensorManager(sensorManager);
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        this.mPhoneGPSManager = new PhoneGPSManager(locationManager);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         this.mPhoneSensorManager.startSensors();
+        this.mPhoneGPSManager.startLocationFix();
 
         this.safeOpenCamera();
         this.mPreview = new CameraPreview(this, this.mCamera);
@@ -45,6 +51,7 @@ public class CameraPreviewActivity extends Activity {
     protected void onPause() {
         super.onPause();
         this.mPhoneSensorManager.stopSensors();
+        this.mPhoneGPSManager.stopLocationFix();
     }
 
     @Override
