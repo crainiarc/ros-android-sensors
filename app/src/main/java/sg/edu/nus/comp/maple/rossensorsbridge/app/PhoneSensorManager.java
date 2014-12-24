@@ -46,7 +46,7 @@ public class PhoneSensorManager implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        this.mSensorValues.put(event.sensor, new ArrayList(Arrays.asList(event.values)));
+        this.mSensorValues.put(event.sensor, Arrays.asList(event.values));
     }
 
     @Override
