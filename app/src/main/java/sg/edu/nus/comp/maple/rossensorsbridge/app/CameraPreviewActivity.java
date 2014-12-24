@@ -1,7 +1,10 @@
 package sg.edu.nus.comp.maple.rossensorsbridge.app;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.hardware.Camera;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,22 +16,33 @@ public class CameraPreviewActivity extends Activity {
 
     private Camera mCamera;
     private CameraPreview mPreview;
+    private PhoneSensorManager mPhoneSensorManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_preview);
+
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        this.mPhoneSensorManager = new PhoneSensorManager(sensorManager);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        this.mPhoneSensorManager.startSensors();
 
         this.safeOpenCamera();
         this.mPreview = new CameraPreview(this, this.mCamera);
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.camera_preview);
         frameLayout.addView(this.mPreview);
         this.mPreview.startCameraPreview();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.mPhoneSensorManager.stopSensors();
     }
 
     @Override
@@ -45,6 +59,7 @@ public class CameraPreviewActivity extends Activity {
                 return true;
 
             case R.id.action_settings:
+                this.goToSettings();
                 return true;
 
             default:
@@ -52,6 +67,13 @@ public class CameraPreviewActivity extends Activity {
         }
     }
 
+    // Option methods
+    private void goToSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    // Camera helper methods
     private boolean safeOpenCamera() {
         boolean opened = false;
         try {
