@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by crainiarc on 12/24/14.
+ * Created by Keng Kiat Lim on 12/24/14.
  */
 public class PhoneSensorManager implements SensorEventListener {
 
