@@ -7,10 +7,6 @@ import android.hardware.SensorManager;
 import org.jdeferred.Promise;
 import org.jdeferred.impl.DeferredObject;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Created by Keng Kiat Lim on 12/26/14.
  */
