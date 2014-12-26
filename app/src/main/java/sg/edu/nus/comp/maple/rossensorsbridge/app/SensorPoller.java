@@ -16,9 +16,9 @@ import java.util.List;
  */
 public class SensorPoller implements SensorEventListener {
     private SensorManager mSensorManager;
-    private int mSensorType
+    private int mSensorType;
     private Sensor mSensor;
-    private DeferredObject<List, Void, Void> mDeferredObject;
+    private DeferredObject<SensorData, Void, Void> mDeferredObject;
 
     public SensorPoller(SensorManager sensorManager, int sensorType) {
         this.mSensorManager = sensorManager;
@@ -35,8 +35,8 @@ public class SensorPoller implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         this.mSensorManager.unregisterListener(this);
-        List values = Collections.unmodifiableList(Arrays.asList(event.values));
-        this.mDeferredObject.resolve(values);
+        SensorData sensorData = new SensorData(this.mSensor, event.values, event.accuracy);
+        this.mDeferredObject.resolve(sensorData);
     }
 
     @Override
