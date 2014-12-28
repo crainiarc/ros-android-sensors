@@ -1,5 +1,6 @@
 package sg.edu.nus.comp.maple.rossensorsbridge.app;
 
+import android.util.Log;
 import org.jdeferred.DeferredManager;
 import org.jdeferred.DoneCallback;
 import org.jdeferred.Promise;
@@ -7,8 +8,9 @@ import org.jdeferred.impl.DefaultDeferredManager;
 import org.jdeferred.multiple.MultipleResults;
 import org.jdeferred.multiple.OneResult;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-import sg.edu.nus.comp.maple.rossensorsbridge.app.dataObjects.SensorData;
+import sg.edu.nus.comp.maple.rossensorsbridge.app.dataObjects.ImageData;
 import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.JSONifiable;
 import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.Pollable;
 
@@ -21,6 +23,7 @@ import java.util.List;
  */
 public class SocketManager implements Runnable {
 
+    private static final String LOG_TAG = "ROS_SENSORS_BRIDGE_SOCKET_MANAGER";
     private Socket mSocket;
     private String mHost;
     private int mPort;
@@ -45,7 +48,6 @@ public class SocketManager implements Runnable {
             while (true) {
                 this.mInBufferedReader.readLine();
                 this.sendSensorData();
-                this.sendImageData();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,20 +65,29 @@ public class SocketManager implements Runnable {
         this.mDeferredManager.when(promises).done(new DoneCallback<MultipleResults>() {
             @Override
             public void onDone(MultipleResults results) {
-                JSONArray jsonArray = new JSONArray();
+                Log.d(SocketManager.LOG_TAG, "Promises are done");
+                JSONObject jsonToSend = new JSONObject();
                 for (OneResult result : results) {
-                    JSONifiable jsonifiable = (JSONifiable) result.getResult();
-                    JSONObject jsonResultObject = jsonifiable.toJSONObject();
-                    jsonArray.put(jsonResultObject);
+                    JSONObject jsonResultObject = ((JSONifiable) result.getResult()).toJSONObject();
+                    try {
+                        String name = jsonResultObject.getString("name");
+                        jsonResultObject.remove("name");
+
+                        if (name.equals(ImageData.stringName)) {
+                            String base64Jpeg = (String) jsonResultObject.get("image");
+                            jsonToSend.put(name, base64Jpeg);
+                        } else {
+                            jsonToSend.put(name, jsonResultObject);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-                String jsonString = jsonArray.toString();
+                String jsonString = jsonToSend.toString();
                 mOutPrintWriter.println(jsonString.length());
                 mOutPrintWriter.println(jsonString);
             }
         });
-    }
-
-    private void sendImageData() {
     }
 
     private void startConnection() throws IOException {
