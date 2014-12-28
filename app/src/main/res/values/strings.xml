@@ -3,5 +3,7 @@
 
     <string name="app_name">ROS Sensors Bridge</string>
     <string name="action_connect">Connect</string>
+    <string name="host_hint">Host Name</string>
+    <string name="port_hint">Port Number</string>
 
 </resources>
