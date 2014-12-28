@@ -76,12 +76,6 @@ public class CameraPreviewActivity extends Activity {
         }
     }
 
-    // Option methods
-    private void goToSettings() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-    }
-
     // Camera helper methods
     private boolean safeOpenCamera() {
         boolean opened = false;
