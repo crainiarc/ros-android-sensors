@@ -1,14 +1,15 @@
-package sg.edu.nus.comp.maple.rossensorsbridge.app;
+package sg.edu.nus.comp.maple.rossensorsbridge.app.dataObjects;
 
 import android.hardware.Sensor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.JSONifiable;
 
 /**
  * Created by Keng Kiat Lim on 12/27/14.
  */
-public class SensorData {
+public class SensorData implements JSONifiable {
 
     private final int mSensorType;
     private final String mSensorStringType;
@@ -22,6 +23,7 @@ public class SensorData {
         this.mAccuracy = accuracy;
     }
 
+    @Override
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
         try {

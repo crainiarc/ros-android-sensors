@@ -8,6 +8,7 @@ import org.jdeferred.multiple.MultipleResults;
 import org.jdeferred.multiple.OneResult;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import sg.edu.nus.comp.maple.rossensorsbridge.app.dataObjects.SensorData;
 
 import java.io.*;
 import java.net.Socket;
