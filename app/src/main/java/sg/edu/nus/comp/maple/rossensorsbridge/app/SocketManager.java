@@ -9,6 +9,8 @@ import org.jdeferred.multiple.OneResult;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import sg.edu.nus.comp.maple.rossensorsbridge.app.dataObjects.SensorData;
+import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.JSONifiable;
+import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.Pollable;
 
 import java.io.*;
 import java.net.Socket;
@@ -26,10 +28,10 @@ public class SocketManager implements Runnable {
     private PrintWriter mOutPrintWriter;
     private DataOutputStream mDataOutputStream;
     private BufferedReader mInBufferedReader;
-    private List<SensorPoller> mSensorPollers;
+    private List<Pollable> mSensorPollers;
     private DeferredManager mDeferredManager;
 
-    public SocketManager(String host, int port, List<SensorPoller> sensorPollers) {
+    public SocketManager(String host, int port, List<Pollable> sensorPollers) {
         this.mHost = host;
         this.mPort = port;
         this.mSensorPollers = sensorPollers;
@@ -48,7 +50,7 @@ public class SocketManager implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            this.stopConnection();
+//            this.stopConnection();
         }
     }
 
@@ -63,8 +65,8 @@ public class SocketManager implements Runnable {
             public void onDone(MultipleResults results) {
                 JSONArray jsonArray = new JSONArray();
                 for (OneResult result : results) {
-                    SensorData sensorData = (SensorData) result.getResult();
-                    JSONObject jsonResultObject = sensorData.toJSONObject();
+                    JSONifiable jsonifiable = (JSONifiable) result.getResult();
+                    JSONObject jsonResultObject = jsonifiable.toJSONObject();
                     jsonArray.put(jsonResultObject);
                 }
                 String jsonString = jsonArray.toString();

@@ -7,6 +7,7 @@ import android.hardware.SensorManager;
 import org.jdeferred.Promise;
 import org.jdeferred.impl.DeferredObject;
 import sg.edu.nus.comp.maple.rossensorsbridge.app.dataObjects.SensorData;
+import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.JSONifiable;
 import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.Pollable;
 
 /**
@@ -16,7 +17,7 @@ public class SensorPoller implements Pollable, SensorEventListener {
     private SensorManager mSensorManager;
     private int mSensorType;
     private Sensor mSensor;
-    private DeferredObject<SensorData, Void, Void> mDeferredObject;
+    private DeferredObject<JSONifiable, Void, Void> mDeferredObject;
 
     public SensorPoller(SensorManager sensorManager, int sensorType) {
         this.mSensorManager = sensorManager;
