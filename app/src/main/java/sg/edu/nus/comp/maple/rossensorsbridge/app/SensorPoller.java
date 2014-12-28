@@ -6,11 +6,13 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import org.jdeferred.Promise;
 import org.jdeferred.impl.DeferredObject;
+import sg.edu.nus.comp.maple.rossensorsbridge.app.dataObjects.SensorData;
+import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.Pollable;
 
 /**
  * Created by Keng Kiat Lim on 12/26/14.
  */
-public class SensorPoller implements SensorEventListener {
+public class SensorPoller implements Pollable, SensorEventListener {
     private SensorManager mSensorManager;
     private int mSensorType;
     private Sensor mSensor;
@@ -22,6 +24,7 @@ public class SensorPoller implements SensorEventListener {
         this.mSensor = this.mSensorManager.getDefaultSensor(this.mSensorType);
     }
 
+    @Override
     public Promise getSensorValues() {
         this.mDeferredObject = new DeferredObject();
         this.mSensorManager.registerListener(this, this.mSensor, SensorManager.SENSOR_DELAY_NORMAL);
