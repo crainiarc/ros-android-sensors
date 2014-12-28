@@ -32,8 +32,8 @@ public class SensorData implements JSONifiable {
                 jsonValues.put(value);
             }
 
+            jsonObject.put("name", this.mSensorStringType);
             jsonObject.put("sensorIntType", this.mSensorType);
-            jsonObject.put("sensorStringType", this.mSensorStringType);
             jsonObject.put("accuracy", this.mAccuracy);
             jsonObject.put("values", jsonValues);
 

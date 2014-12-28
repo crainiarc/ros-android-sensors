@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.maple.rossensorsbridge.app.dataObjects;
 
 import android.location.Location;
+import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.JSONifiable;
@@ -10,6 +11,7 @@ import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.JSONifiable;
  */
 public class LocationData implements JSONifiable {
 
+    public static final String stringName = "Location Data";
     private final Location mLocation;
 
     public LocationData(Location location) {
@@ -20,6 +22,7 @@ public class LocationData implements JSONifiable {
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("name", LocationData.stringName);
             jsonObject.put("accuracy", this.mLocation.getAccuracy());
             jsonObject.put("altitude", this.mLocation.getAltitude());
             jsonObject.put("bearing", this.mLocation.getBearing());
@@ -36,7 +39,7 @@ public class LocationData implements JSONifiable {
         }
     }
 
-    public Location getmLocation() {
+    public Location getLocation() {
         return mLocation;
     }
 }
