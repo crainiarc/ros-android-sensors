@@ -7,7 +7,6 @@ import org.jdeferred.Promise;
 import org.jdeferred.impl.DefaultDeferredManager;
 import org.jdeferred.multiple.MultipleResults;
 import org.jdeferred.multiple.OneResult;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import sg.edu.nus.comp.maple.rossensorsbridge.app.dataObjects.ImageData;

@@ -2,7 +2,6 @@ package sg.edu.nus.comp.maple.rossensorsbridge.app;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -11,20 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import org.jdeferred.DeferredManager;
-import org.jdeferred.DoneCallback;
-import org.jdeferred.Promise;
-import org.jdeferred.impl.DefaultDeferredManager;
-import org.jdeferred.multiple.MultipleResults;
-import org.jdeferred.multiple.OneResult;
 import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.Pollable;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 

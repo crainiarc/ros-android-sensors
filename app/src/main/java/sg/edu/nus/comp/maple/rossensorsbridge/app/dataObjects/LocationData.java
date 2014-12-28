@@ -1,7 +1,6 @@
 package sg.edu.nus.comp.maple.rossensorsbridge.app.dataObjects;
 
 import android.location.Location;
-import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import sg.edu.nus.comp.maple.rossensorsbridge.app.interfaces.JSONifiable;
